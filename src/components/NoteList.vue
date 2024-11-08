@@ -1,105 +1,70 @@
 <template>
-  <div id="box">
-    <div class="box" v-infinite-scroll="load" infinite-scroll-disabled="disabled" >
-        <ul class="list" >
-          <li v-for="i in count" class="list-item" :key="i">{{ i }}</li>
-        </ul>
-        <p v-if="loading" style="margin-top:10px;" class="loading">
-          <span></span>
-        </p>
-        <p v-if="noMore" style="margin-top:10px;font-size:13px;color:#ccc">没有更多了</p>
+  <div class="note-list">
+    <div v-for="note in notes" :key="note.id" class="note-item">
+      <div class="note-time">{{ note.created_time }}</div>
+      <div class="note-content">{{ note.content }}</div>
+      <div class="note-footer">
+        <!-- 笔记底部的操作按钮 -->
+        <div class="note-actions">
+          <button class="action-btn">
+            <i class="icon-more"></i>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        count: 10,
-        loading: false
-      }
-    },
-    computed: {
-      noMore () {
-        return this.count >= 10000
-      },
-      disabled () {
-        return this.loading || this.noMore
-      }
-    },
-    methods: {
-      load () {
-        this.loading = true
-        setTimeout(() => {
-          this.count += 2
-          this.loading = false
-        }, 2000)
-      }
+export default {
+  name: 'NoteList',
+  props: {
+    notes: {
+      type: Array,
+      default: () => []
     }
   }
+}
 </script>
 
 <style scoped>
-.el-container[data-v-2cb981da] {
-    width: -webkit-min-content;
-    width: -moz-min-content;
-    width: min-content;
-    max-width: 100%;
-    height: 100vh;
-    margin: 0 auto;
+.note-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.el-container {
-    display: flex;
-    flex-direction: row;
-    flex: 1;
-    flex-basis: auto;
-    box-sizing: border-box;
-    min-width: 0;
+.note-item {
+  background: white;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
-#box{
-    width: 100%;
-  height: 100%;
-  position: absolute;
-  overflow-y: auto;
+
+.note-time {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 8px;
 }
-.box {
-  width: 100%;
-   margin:  0 auto;
+
+.note-content {
+  margin-bottom: 16px;
 }
-.list {
-  padding: 0;
-  font-size: 14px;
+
+.note-footer {
+  display: flex;
+  justify-content: flex-end;
 }
-.list-item {
-  width: 100%;
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  list-style: none;
-  padding: 0 1rem;
-  box-sizing: border-box;
-  height: 70px;
-  line-height: 70px;
-  border-bottom: 1px solid #e7e7e7;
+
+.action-btn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
 }
-.loading span {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  border: 2px solid #409eff;
-  border-left: transparent;
-  animation: zhuan 0.5s linear infinite;
-  border-radius: 50%;
-}
-@keyframes zhuan {
-  0% {
-    transform: rotate(0);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+
+.action-btn:hover {
+  background: #f5f5f5;
 }
 </style>
